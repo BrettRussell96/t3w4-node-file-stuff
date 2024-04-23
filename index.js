@@ -73,15 +73,22 @@ function createJsonFile(targetPath, data){
 }
 
 
-function loadDataFromFile(targetPath){
+async function loadDataFromFile(targetPath){
     let data = null;
 
-    // TODO: load data logic goes here
-    // Reading data from files takes time
-    // promises or async/await
-
+    let doesFileExist = await doesFileExistAsync(targetPath);
+    if (doesFileExist){
+        data = await fsPromises.readFile(targetPath, { encoding: 'utf8' });
+        data = JSON.parse(data);
+    }
+    
     return data;
 }
+
+(async () => {
+    let fileData = await loadDataFromFile("./pokemonStats.json");
+    console.log(fileData);
+})()
 
 
 /* 
